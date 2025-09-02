@@ -295,34 +295,3 @@ def aes_decrypt(ciphertext, key, nr = 10):
         pt_block = decrypt_block(block, key, nr)
         plaintext += pt_block
     return pkcs7_unpad(plaintext)
-
-#Test Code
-
-if __name__ == "__main__":
-    pt = input("Enter your message: ")
-    #in case the user does not want to deal with making the key by themselves
-    use_random_key = input("Use a random key? (y/n): ").lower()
-
-    if use_random_key == 'y':
-        key_bytes = secrets.token_bytes(16) 
-        print("Random Key (hex):", key_bytes.hex())
-    else:
-        key = input("Enter a 16-byte key: ")
-        if len(key) != 16:
-            print("Key must be exactly 16 bytes!")
-            exit()
-        key_bytes = key.encode("utf-8")
-
-    nr = int(input("Enter number of AES rounds: "))
-
-    pt_bytes = pt.encode("utf-8")
-
-    print("\nPlaintext:", pt)
-    print("Plaintext (hex):", pt_bytes.hex())
-
-    ct = aes_encrypt(pt_bytes, key_bytes, nr)
-    print("\nCiphertext (hex):", ct.hex())
-
-    dec = aes_decrypt(ct, key_bytes, nr)
-    print("\nDecrypted text:", dec.decode("utf-8", errors="ignore"))
-    print("Decrypted (hex):", dec.hex())
